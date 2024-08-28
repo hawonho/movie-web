@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ReservationMapper">
+	<resultMap id="reservationMap" type="ReservationVO">
+		<result column="reserve_no" property="reserveNo" />
+		<result column="member_id" property="memberId" />
+		<result column="movie_no" property="movieNo" />
+		<result column="schedule_no" property="scheduleNo" />
+		<result column="seat_no" property="seatNo" />
+	</resultMap>
+	
+    <insert id="reserveMovie" parameterType="reservationVO">
+        INSERT INTO tbl_reservation (reserve_no, member_id, movie_no, schedule_no, seat_no)
+        VALUES (SEQ_RESERVE_NO.NEXTVAL, #{memberId}, #{movieNo}, #{scheduleNo}, #{seatNo})
+    </insert>
+
+    <delete id="cancelReservation" parameterType="int">
+        DELETE FROM tbl_reservation WHERE reserve_no = #{reserveNo}
+    </delete>
+
+    <select id="getReservationsByMemberId" resultMap="reservationMap">
+        SELECT *
+        FROM tbl_reservation r
+        JOIN tbl_movie m ON r.movie_no = m.movie_no
+        JOIN tbl_schedule s ON r.schedule_no = s.schedule_no
+        JOIN tbl_seat se ON r.seat_no = se.seat_no
+        WHERE r.member_id = #{memberId}
+    </select>
+    
+</mapper>

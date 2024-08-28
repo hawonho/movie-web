@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SeatMapper">
+	<resultMap id="seatMap" type="SeatVO">
+		<result column="seat_no" property="seatNo" />
+		<result column="theater_name" property="theaterName" />
+		<result column="seat_name" property="seatName" />
+		<result column="schedule_no" property="scheduleNo" />
+	</resultMap>
+	
+	<select id="getAvailableSeats" resultMap="seatMap">
+		SELECT *
+		FROM tbl_seat WHERE available = 1
+	</select>
+	
+	<update id="update" parameterType="int">
+		update tbl_seat set available = 0 where seat_no = #{seatNo}
+	</update>
+	
+	<insert id="createSeat" parameterType="scheduleVO">
+		INSERT INTO TBL_SEAT(seat_no,schedule_no,theater_name,seat_name) VALUES (SEQ_SEAT_NO.nextval,#{scheduleNo},#{theaterName},#{seatName})
+	</insert>
+
+</mapper>

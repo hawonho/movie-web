@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="TheaterMapper">
+	<resultMap id="theaterMap" type="TheaterVO">
+		<result column="theater_name" property="theaterName" />
+		<result column="total_seats" property="totalSeats" />
+	</resultMap>
+
+    <select id="getTheater" resultMap="theaterMap">
+        SELECT theater_name, total_seats FROM tbl_theater
+    </select>
+    
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MemberMapper">
+	<resultMap id="memberMap" type="MemberVO">
+		<result column="member_id" property="memberId" />
+		<result column="member_name" property="memberName" />
+		<result column="write_auth" property="writeAuth" />
+	</resultMap>
+
+    <insert id="join" parameterType="memberVO">
+        INSERT INTO tbl_member (member_id, member_name, password, phone, email, write_auth, TYPE)
+        VALUES (#{memberId}, #{memberName}, #{password}, #{phone}, #{email}, 'u', 'u')
+    </insert>
+
+    <select id="login" parameterType="memberVO" resultMap="memberMap">
+        SELECT * FROM tbl_member WHERE member_id = #{memberId} AND password = #{password}
+    </select>
+    
+    <select id="getAllMembers" parameterType="memberVO" resultMap="memberMap">
+        SELECT * FROM tbl_member
+    </select>
+
+    <update id="updateWriteAuth" parameterType="memberVO">
+        UPDATE tbl_member SET write_auth = #{writeAuth} WHERE member_id = #{memberId}
+    </update>
+    
+</mapper>

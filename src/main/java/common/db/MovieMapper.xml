@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MovieMapper">
+	<resultMap id="movieMap" type="MovieVO">
+		<result column="movie_no" property="movieNo" />
+		<result column="movie_name" property="movieName" />
+		<result column="open_date" property="openDate" />
+		<result column="running_time" property="runningTime" />
+	</resultMap>
+	
+    <insert id="addMovie" parameterType="movieVO">
+        INSERT INTO tbl_movie (movie_no, movie_name, open_date, running_time)
+        VALUES (SEQ_MOVIE_NO.NEXTVAL, #{movieName}, #{openDate}, #{runningTime})
+    </insert>
+
+    <delete id="deleteMovie" parameterType="int">
+        DELETE FROM tbl_movie WHERE movie_no = #{movieNo}
+    </delete>
+
+	<select id="getAllMovies" resultMap="movieMap">
+		SELECT movie_no, movie_name, open_date, running_time FROM tbl_movie
+	</select>
+    
+</mapper>

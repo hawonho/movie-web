@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ScheduleMapper">
+    <resultMap id="scheduleMap" type="ScheduleVO">
+		<result column="schedule_no" property="scheduleNo" />
+		<result column="movie_no" property="movieNo" />
+		<result column="theater_name" property="theaterName" />
+		<result column="start_time" property="startTime" />
+		<result column="movie_name" property="movieName" />
+	</resultMap>
+    
+    <insert id="addSchedule" parameterType="scheduleVO">
+        INSERT INTO tbl_schedule (schedule_no, movie_no, theater_name, start_time)
+        VALUES (SEQ_SCHEDULE_NO.NEXTVAL, #{movieNo}, #{theaterName}, to_date(#{startTime}, 'yyyy-mm-dd hh24:mi:ss'))
+    </insert>
+
+    <delete id="deleteSchedule" parameterType="int">
+        DELETE FROM tbl_schedule WHERE schedule_no = #{scheduleNo}
+    </delete>
+
+    <select id="getSchedulesByMovie" parameterType="int" resultType="scheduleVO">
+        SELECT * FROM tbl_schedule WHERE movie_no = #{movieNo}
+    </select>
+
+	<select id="getAllSchedules" resultMap="scheduleMap">
+		SELECT *
+		FROM TBL_SCHEDULE ts JOIN TBL_MOVIE tm ON tm.MOVIE_NO = ts.MOVIE_NO
+		JOIN TBL_THEATER tt ON tt.THEATER_NAME = ts.THEATER_NAME
+	</select>
+	
+	<select id="getSchedule" resultMap="scheduleMap">
+		select * from tbl_schedule where movie_no = #{movieNo} and theater_name = #{theaterName} and start_time = to_date(#{startTime}, 'yyyy-mm-dd hh24:mi:ss')
+	</select>
+    
+</mapper>

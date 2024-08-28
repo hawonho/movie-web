@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board.dao.BoardDAO">
+
+	<resultMap type="boardVO" id="boardMap">
+		<result column="reg_date" property="regDate"/>
+		<result column="view_cnt" property="viewCnt"/>
+	</resultMap>
+	
+	<sql id="selectBoard">
+		select no, title, writer, content, view_cnt, to_char(reg_date, 'yyyy-mm-dd') reg_date
+		from t_board
+	</sql>
+	
+	<!-- 게시글조회(제목, 작성자) -->
+	<select id="selectWhere" resultMap="boardMap" parameterType="boardVO">
+		<include refid="selectBoard" />
+		<where>
+			<if test="title != null">
+				title=#{title}
+			</if>
+			<if test="writer != null">
+				and writer=#{writer}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 게시글번호로 조회 -->
+	<select id="selectByNo" resultMap="boardMap" parameterType="int">
+		select no, title, writer, content, view_cnt, to_char(reg_date, 'yyyy-mm-dd') reg_date
+		from t_board
+		where no = #{no}
+	</select>
+	
+	<select id="selectByNo2" resultMap="boardMap" parameterType="boardVO">
+		select no, title, writer, content, view_cnt, to_char(reg_date, 'yyyy-mm-dd') reg_date
+		from t_board
+		where no = #{no}
+	</select>
+	
+	<select id="selectByNo3" resultType="map" parameterType="int">
+		select no, title, writer, content, view_cnt, to_char(reg_date, 'yyyy-mm-dd') reg_date
+		from t_board
+		where no = #{no}
+	</select>
+	
+	<!-- 전체게시글 조회 -->
+	<select id="selectAll" resultType="boardVO">
+		select no, title, writer, to_char(reg_date, 'yyyy-mm-dd') regDate
+		from t_board
+		order by no desc
+	</select>
+	
+	<select id="selectAll2" resultMap="boardMap">
+		select no, title, writer, to_char(reg_date, 'yyyy-mm-dd') reg_date
+		from t_board
+		order by no desc
+	</select>
+	
+	<insert id="insert" parameterType="boardVO">
+		insert into t_board(no, title, writer, content)
+		 values(seq_t_board_no.nextval, #{title}, #{writer}, #{content})
+	</insert>
+
+</mapper>
